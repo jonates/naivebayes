@@ -1,36 +1,15 @@
 # implementando o modelo naive bayes na unha ---------------------------------
 
-read_data<-function(a){
-  nl = as.numeric(unlist(strsplit(a[1],split=" ")))
-  m = as.numeric(unlist(strsplit(a[2],split=" ")))
-  #for (i in 3:(nl[1]+1-nl[2])){
-  for (i in 3:(nl[1]+1)){
-    d = as.numeric(unlist(strsplit(a[i],split=" ")))
-    m = rbind(m, d)
-  }
-  m
-}
+#carregando dataset de treinamento
+treino <- read.csv(file = "jogar-tenis.csv",encoding = 'UTF-8')
+treino <- treino[,-1]
 
-
-cria_treino<-function(){
-  a = readLines("stdin",n=-1, warn=FALSE);
-  df = read_data(a)
-  treino = df[1:(dim(treino)[1]-1),]
-  return (treino)
-}
-
-cria_teste<-function(){
-  a = readLines("stdin",n=-1, warn=FALSE);
-  df = read_data(a)
-  teste = df[dim(treino)[1],]
-  return (teste)
-}
-
-minha_naive_bayes <- function(){
-
-#carregando os dataset  
-treino <- cria_treino()
-teste <- cria_teste()
+#definindo um dataset de teste
+teste <- data.frame(
+  Tempo = 'Ensolarado', 
+  Temperatura = 'Intermediária', 
+  Umidade = 'Alta', 
+  Vento = 'Forte')
 
 #guardando o número de variávéis preditoras + resposta
 nvar <- dim(treino)[2]
@@ -64,6 +43,4 @@ prob_predicao <- prop.table(predicao)
   
 prob_predicao[prob_predicao==max(prob_predicao)]
 
-}
 
-minha_naive_bayes()
