@@ -18,15 +18,15 @@ cria_df_teste<-function(a){
 }
 
 cria_treino<-function(){
-  dados = readLines("stdin",n=-1, warn=FALSE)
-  #dados = readLines("dados_runcodes2.txt",n=-1, warn=FALSE)
+  #dados = readLines("stdin",n=-1, warn=FALSE)
+  dados = readLines("dados_runcodes2.txt",n=-1, warn=FALSE)
   treino = cria_df_treino(dados)
   return(treino)
 }
 
 cria_teste<-function(){
-  dados = readLines("stdin",n=-1, warn=FALSE)
-  #dados = readLines("dados_runcodes2.txt",n=-1, warn=FALSE)
+  #dados = readLines("stdin",n=-1, warn=FALSE)
+  dados = readLines("dados_runcodes2.txt",n=-1, warn=FALSE)
   teste = cria_df_teste(dados)
   return(teste)
 }
@@ -41,11 +41,11 @@ naive_bayes <- function(){
  #guardando o número de variávéis preditoras + resposta
 #nvar <- dim(treino)[2]
 nvar <- ncol(treino)
-
+#nvar
 
 #calculando as probabilidades a priores
 prob_pri <- prop.table(table(treino[,nvar]))
-
+prob_pri
 
 #Calculando as verossimilhanca
 verossimilhanca <- c(1,1)

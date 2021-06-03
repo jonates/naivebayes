@@ -31,7 +31,6 @@ prob_cond
 
 #predizendo as classes do dataset teste
 verossimilhanca <- c(1,1)
-j=2
 for(j in 1:(nvar-1)){
   verossimilhanca <- verossimilhanca*prob_cond[[j]][teste[,j],]
 } 

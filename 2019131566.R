@@ -19,14 +19,14 @@ cria_df_teste<-function(a){
 
 cria_treino<-function(){
   dados = readLines("stdin",n=-1, warn=FALSE)
-  #dados = readLines("dados_runcodes2.txt",n=-1, warn=FALSE)
+  #dados = readLines("dados_runcodes.txt",n=-1, warn=FALSE)
   treino = cria_df_treino(dados)
   return(treino)
 }
 
 cria_teste<-function(){
   dados = readLines("stdin",n=-1, warn=FALSE)
-  #dados = readLines("dados_runcodes2.txt",n=-1, warn=FALSE)
+  #dados = readLines("dados_runcodes.txt",n=-1, warn=FALSE)
   teste = cria_df_teste(dados)
   return(teste)
 }
@@ -35,38 +35,32 @@ naive_bayes <- function(){
 
 #carregando os dataset  
  treino <- as.data.frame(cria_treino())
- rownames(treino) <- NULL
- teste <- as.vector(cria_teste())
+ teste <- cria_teste()
 
- #guardando o número de variávéis preditoras + resposta
-#nvar <- dim(treino)[2]
-nvar <- ncol(treino)
 
+#guardando o número de variávéis preditoras + resposta
+nvar <- dim(treino)[2]
 
 #calculando as probabilidades a priores
-prob_pri <- prop.table(table(treino[,nvar]))
+prob_pri <- prop.table(table(treino[[nvar]]))
 
-
-#Calculando as verossimilhanca
-verossimilhanca <- c(1,1)
+#Calculando as probabilidades condicionais
+tab_cond <- NULL
+prob_cond <- NULL
 for(i in 1:(nvar-1)){
-  tab_cond <- table(treino[,i],treino[,nvar])
-  prob_cond <- (prop.table(tab_cond,2))[teste[i],]
-  verossimilhanca <- verossimilhanca*prob_cond
+  tab_cond[[i]] <- table(treino[[i]],treino[[nvar]])
+  prob_cond[[i]] <- prop.table(tab_cond[[i]],2)
 }
 
-# for(i in 1:(nvar-1)){
-#   tab_cond <- table(treino[,i],treino[,nvar])
-#   prob_cond <- as.data.frame(prop.table(tab_cond,2))
-#   names(prob_cond) <- c('nivel','label','freq')
-#   prob_cond_teste <- prob_cond[prob_cond$nivel==teste[i],'freq']
-#   verossimilhanca <- verossimilhanca*prob_cond_teste
-# }
+#predizendo as classes do dataset teste
+verossimilhanca <- c(1,1)
 
-# calculando a posteriori
+for(j in 1:(nvar-1)){
+  verossimilhanca <- verossimilhanca*(prob_cond[[j]][teste[j],])
+} 
+
 predicao <- prob_pri * verossimilhanca 
 
-#predizendo as classes do dataset teste
 prob_predicao <- prop.table(predicao)
   
 max_prob_predicao <- round(max(prob_predicao),3)
